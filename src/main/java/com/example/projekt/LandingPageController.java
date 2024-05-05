@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
+@Controller
 public class LandingPageController {
     @GetMapping("/start")
     public String landingPage(){
