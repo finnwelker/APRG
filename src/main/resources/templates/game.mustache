@@ -68,19 +68,20 @@
     function inputDirection(key){
         switch (key){
             case "w":            //87 = W
-                this.speedY +=1;
+                playerGamePiece.speedY -=1;
                 console.log(`w`);
+                console.log(this.speedY);
                 break;
             case "s":            //83 = S
-                this.speedY -=1;
+                playerGamePiece.speedY +=1;
                 console.log(`s`);
                 break;
             case "a":
-                this.speedX -=1;
+                playerGamePiece.speedX -=1;
                 console.log(`a`);
                 break;
             case "d":
-                this.speedX +=1;
+                playerGamePiece.speedX +=1;
                 console.log(`d`);
                 break;
 
