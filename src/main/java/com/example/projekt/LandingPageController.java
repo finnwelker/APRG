@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
+
 @Controller
 public class LandingPageController {
     @GetMapping("/start")
@@ -13,8 +14,14 @@ public class LandingPageController {
         return "start";
     }
 
-    @PostMapping("/welcome")
-    public String postingOn(Model model, @RequestParam("uName") String uName){
-        return "welcome.mustache";
+    @PostMapping("/game")
+    public String gameLaunch(){
+        return "game";
     }
+
+//    @PostMapping("/welcome")
+//    public String postingOn(Model model, @RequestParam("uName") String uName){
+//        model.addAttribute("username", uName);
+//        return "welcome";
+//    }
 }
