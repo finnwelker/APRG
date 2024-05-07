@@ -15,11 +15,17 @@
 <script>
 
     var playerGamePiece;
+    var map = {};
 
     function startGame(){
         myGameArea.start();
         playerGamePiece = new gameComponent(30,30, "black", 225, 600)
         document.addEventListener("keydown", (event) =>{
+            map[event.key] = event.type === "keydown";
+            inputDirection(event.key);
+        })
+        document.addEventListener("keyup", (event)=>{
+            map[event.key] = false;
             inputDirection(event.key);
         })
     }
@@ -57,6 +63,7 @@
             ctx = myGameArea.context;
             ctx.fillStyle = color;
             ctx.fillRect(this.x, this.y, this.width, this.height)
+            //hier später so eine art motion blur einfügen
         }
         this.newPos = function(){
             this.x = this.newX;
@@ -66,39 +73,29 @@
     }
 
     function inputDirection(key){
-    //     var map = {}; // You could also use an array
-    //     onkeydown = onkeyup = function(e){
-    //         map[e.key] = e.type == 'keydown';
-    //         console.log(e.type)
+            //geht das schöner bzw smoother?
+            if(map["w"]&&!map["a"]&&!map["d"]) {
+                playerGamePiece.newY -= 5;
+            }else if(map["s"]&&!map["a"]&&!map["d"]){
+                playerGamePiece.newY += 5;
+            }else if(map["a"]&&!map["w"]&&!map["s"]){
+                playerGamePiece.newX -= 5;
+            }else if(map["d"]&&!map["w"]&&!map["s"]){
+                playerGamePiece.newX += 5;
+            }else if(map["w"]&&map["a"]) {
+                playerGamePiece.newY -= 5;
+                playerGamePiece.newX -= 5;
+            }else if(map["s"]&&map["a"]){
+                playerGamePiece.newY += 5;
+                playerGamePiece.newX -= 5;
+            }else if(map["s"]&&map["d"]){
+                playerGamePiece.newY += 5;
+                playerGamePiece.newX += 5;
+            }else if(map["w"]&&map["d"]){
+                playerGamePiece.newY -= 5;
+                playerGamePiece.newX += 5;
 
-
-        switch (key){
-            case "w":            //87 = W
-                playerGamePiece.newY -=5;
-                break;
-            case "s":            //83 = S
-                playerGamePiece.newY +=5;
-                break;
-            case "a":
-                playerGamePiece.newX -=5;
-                break;
-            case "d":
-                playerGamePiece.newX +=5;
-                break;
             }
-            // if(map["w"]&&map["a"]) {
-            //     playerGamePiece.newY -= 5;
-            //     playerGamePiece.newX -= 5;
-            // }else if(map["s"]&&map["a"]){
-            //     playerGamePiece.newY += 5;
-            //     playerGamePiece.newX -= 5;
-            // }else if(map["s"]&&map["d"]){
-            //     playerGamePiece.newY += 5;
-            //     playerGamePiece.newX += 5;
-            // }else if(map["w"]&&map["d"]){
-            //     playerGamePiece.newY -= 5;
-            //     playerGamePiece.newX += 5;
-            // }
 
 
         // }
