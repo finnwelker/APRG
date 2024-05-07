@@ -9,12 +9,12 @@ import org.springframework.ui.Model;
 
 @Controller
 public class LandingPageController {
-    @GetMapping("/start")
-    public String landingPage(){
-        return "start";
-    }
+//    @GetMapping("/start")
+//    public String landingPage(){
+//        return "start";
+//    }
 
-    @PostMapping("/game")
+    @GetMapping("/game")
     public String gameLaunch(){
         return "game";
     }
