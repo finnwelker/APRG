@@ -19,7 +19,7 @@
 
     function startGame(){
         myGameArea.start();
-        playerGamePiece = new gameComponent(30,30, "black", 480/2-15, 600)
+        playerGamePiece = new gameComponent(30,30, "black", 225, 600)
         document.addEventListener("keydown", (event) =>{
             inputDirection(event.key);
         })
@@ -29,7 +29,6 @@
         myGameArea.clear();
         playerGamePiece.newPos();
         playerGamePiece.update();
-
     }
 
     var myGameArea = {
@@ -51,6 +50,8 @@
         this.height = height;
         this.x = x;
         this.y = y;
+        this.newX = x;
+        this.newY = y;
         this.speedX = 0;
         this.speedY = 0;
         this.update = function(){
@@ -59,33 +60,49 @@
             ctx.fillRect(this.x, this.y, this.width, this.height)
         }
         this.newPos = function(){
-            this.x += this.speedX;
-            this.y += this.speedY;
+            this.x = this.newX;
+            this.y = this.newY;
         }
 
     }
 
     function inputDirection(key){
+    //     var map = {}; // You could also use an array
+    //     onkeydown = onkeyup = function(e){
+    //         map[e.key] = e.type == 'keydown';
+    //         console.log(e.type)
+
+
         switch (key){
             case "w":            //87 = W
-                playerGamePiece.speedY -=1;
-                console.log(`w`);
-                console.log(this.speedY);
+                playerGamePiece.newY -=5;
                 break;
             case "s":            //83 = S
-                playerGamePiece.speedY +=1;
-                console.log(`s`);
+                playerGamePiece.newY +=5;
                 break;
             case "a":
-                playerGamePiece.speedX -=1;
-                console.log(`a`);
+                playerGamePiece.newX -=5;
                 break;
             case "d":
-                playerGamePiece.speedX +=1;
-                console.log(`d`);
+                playerGamePiece.newX +=5;
                 break;
+            }
+            // if(map["w"]&&map["a"]) {
+            //     playerGamePiece.newY -= 5;
+            //     playerGamePiece.newX -= 5;
+            // }else if(map["s"]&&map["a"]){
+            //     playerGamePiece.newY += 5;
+            //     playerGamePiece.newX -= 5;
+            // }else if(map["s"]&&map["d"]){
+            //     playerGamePiece.newY += 5;
+            //     playerGamePiece.newX += 5;
+            // }else if(map["w"]&&map["d"]){
+            //     playerGamePiece.newY -= 5;
+            //     playerGamePiece.newX += 5;
+            // }
 
-        }
+
+        // }
     }
 
 </script>
