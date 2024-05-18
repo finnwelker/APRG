@@ -16,10 +16,20 @@
 
     var playerGamePiece;
     var map = {};
+    var enemies = [];
+    var gameStage = 1;
+    var enemyCount = 5;
+    let movementToken = false;
+    let movementDirection = 1;      //1 = rechts, -1 = links
+    let yTarget = 120;
 
     function startGame(){
         myGameArea.start();
         playerGamePiece = new gameComponent(30,30, "black", 225, 600)
+        for (let i = 0; i < enemyCount; i++){
+            enemies[i] = new gameComponent(30,30, "red", 20*(i*5)+1, 100)
+            console.log(enemies[i])
+        }
         document.addEventListener("keydown", (event) =>{
             map[event.key] = event.type === "keydown";
             inputDirection(event.key);
@@ -34,6 +44,15 @@
         myGameArea.clear();
         playerGamePiece.newPos();
         playerGamePiece.update();
+        for (let i = 0; i< enemyCount; i++){
+            directionCheck();
+            enemyMovement(enemies[i]);
+            enemies[i].newPos();
+            enemies[i].update();
+        }
+        if(gameOverCheck()){
+            //do smth here
+        }
     }
 
     var myGameArea = {
@@ -66,8 +85,21 @@
             //hier später so eine art motion blur einfügen
         }
         this.newPos = function(){
+            if(this.newX < 0){
+                this.newX = 0;
+            }
+            else if(this.newX>450){
+                this.newX=450;
+            }
+            else if(this.newY < 0){
+                this.newY = 0;
+            }
+            else if(this.newY>690){
+                this.newY=690
+            }
             this.x = this.newX;
             this.y = this.newY;
+
         }
 
     }
@@ -96,9 +128,68 @@
                 playerGamePiece.newX += 5;
 
             }
+    }
 
+    function enemyMovement(enemy){
+        if(!movementToken){
+            enemyHorizontalMovement(enemy);     //movementToken decides whether we move horizontally or vertically
+        }
+        else{
+            enemyVerticalMovement(enemy);
+        }
+    }
 
-        // }
+    function enemyHorizontalMovement(enemy){
+        enemy.newX += .33*movementDirection;    //.33 is the speed, movementDirection is side (-1 = left, +1 = right)
+    }
+
+    function  enemyVerticalMovement(enemy){
+        if(enemy.newY<=yTarget){                   //Vertical movement up until 20 px ahead (yOld increments by 20)
+            enemy.newY += .2;
+        }
+
+    }
+
+    function movementAdjust(){
+        for(let i = 0; i<enemyCount; i++){
+            if(movementDirection === -1){
+                enemies[i].newX -= 1;           //Both necessary so direction check doesnt constantly trigger (newX = 450) We want it to only trigger on first contact
+            }
+            else{
+                enemies[i].newX += 1;           //same as above
+            }
+        }
+    }
+
+    function directionCheck(){                  //sets both horizontal and vertical flags
+        if(enemies[enemyCount-1].newX>=450){
+            movementDirection = -1;
+            movementToken = true;
+            movementAdjust();                   //Necessary so we do not constantly trigger the condition (and most importantly only increment yOld once)
+
+        }
+        else if (enemies[0].newX<=0){
+            movementDirection = 1;
+            movementToken = true;
+            movementAdjust();                   //same as above
+        }
+        else if (enemies[enemyCount-1].y>=yTarget){
+            movementToken = false;
+            yTarget += 20;                      //TODO: this if clause is not triggered so no change in movement happens
+        }
+        console.log(enemies[enemyCount-1].y)
+        console.log(yTarget)
+
+    }
+
+    function gameOverCheck(){
+        for (let i = 0; i < enemyCount; i++){
+            if(enemies[i].y===690){             //Enemies reached bottom | TODO: Implement Game over screen - Pause game
+                console.log("GAME OVER")
+                return true;
+
+            }
+        }
     }
 
 </script>
