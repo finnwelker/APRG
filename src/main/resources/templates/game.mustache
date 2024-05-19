@@ -22,21 +22,29 @@
     let movementToken = false;
     let movementDirection = 1;      //1 = rechts, -1 = links
     let yTarget = 120;
+    let maxBullets = 8;
+    let bullets = [];
+    let bulletCounter = 0;
+
 
     function startGame(){
         myGameArea.start();
-        playerGamePiece = new gameComponent(30,30, "black", 225, 600)
+        playerGamePiece = new gameComponent(30,30, "black", 225, 600, true)
         for (let i = 0; i < enemyCount; i++){
-            enemies[i] = new gameComponent(30,30, "red", 20*(i*5)+1, 100)
+            enemies[i] = new gameComponent(30,30, "red", 20*(i*5)+1, 100, true)
             console.log(enemies[i])
+        }
+        for(let i = 0; i <= maxBullets; i++){
+            bullets[i] = new gameComponent(2, 5, "blue", -10, -10, false)
         }
         document.addEventListener("keydown", (event) =>{
             map[event.key] = event.type === "keydown";
-            inputDirection(event.key);
+            inputDirection();
+            inputAction(event.key)
         })
         document.addEventListener("keyup", (event)=>{
             map[event.key] = false;
-            inputDirection(event.key);
+            inputDirection();
         })
     }
 
@@ -44,8 +52,9 @@
         myGameArea.clear();
         playerGamePiece.newPos();
         playerGamePiece.update();
-        for (let i = 0; i< enemyCount; i++){
+        for (let i = 0; i < enemyCount; i++){
             directionCheck();
+            bulletUpdate();
             enemyMovement(enemies[i]);
             enemies[i].newPos();
             enemies[i].update();
@@ -69,15 +78,14 @@
         }
     }
 
-    function gameComponent(width, height, color, x, y){
+    function gameComponent(width, height, color, x, y, active){
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
         this.newX = x;
         this.newY = y;
-        this.speedX = 0;
-        this.speedY = 0;
+        this.active = active;
         this.update = function(){
             ctx = myGameArea.context;
             ctx.fillStyle = color;
@@ -104,7 +112,7 @@
 
     }
 
-    function inputDirection(key){
+    function inputDirection(){
             //geht das schöner bzw smoother?
             if(map["w"]&&!map["a"]&&!map["d"]) {
                 playerGamePiece.newY -= 5;
@@ -128,6 +136,16 @@
                 playerGamePiece.newX += 5;
 
             }
+    }
+
+    function inputAction(key){
+        if(key === " " && bulletCounter < maxBullets){                        // " " ist spacebar
+            bullets[bulletCounter].newX = playerGamePiece.x+15;
+            bullets[bulletCounter].newY = playerGamePiece.y;
+            bullets[bulletCounter].active = true;
+            bulletCounter += 1;
+        }
+
     }
 
     function enemyMovement(enemy){
@@ -175,10 +193,18 @@
         }
         else if (enemies[enemyCount-1].y>=yTarget){
             movementToken = false;
-            yTarget += 20;                      //TODO: this if clause is not triggered so no change in movement happens
+            yTarget += 20;
         }
-        console.log(enemies[enemyCount-1].y)
-        console.log(yTarget)
+    }
+
+    function bulletUpdate(){
+        for (let i = 0; i < bullets.length-1; i++){
+            if(bullets[i].active === true){
+                bullets[i].newY -= 5;           //IDEA: Create a menu toolbar at the top and bottom, top to hide the bullets left hanging there and bot to use the bullets as ammunition symbols
+            }
+            bullets[i].newPos();
+            bullets[i].update();
+        }
 
     }
 
