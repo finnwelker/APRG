@@ -24,4 +24,5 @@ public class LandingPageController {
 //        model.addAttribute("username", uName);
 //        return "welcome";
 //    }
+    // id9andijaw
 }
