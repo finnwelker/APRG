@@ -25,17 +25,21 @@
     let maxBullets = 8;
     let bullets = [];
     let bulletCounter = 0;
+    let score = 0;
 
 
     function startGame(){
         myGameArea.start();
+        UIElementTop.start(0, 0);
+        UIElementBot.start(0, 700);
         playerGamePiece = new gameComponent(30,30, "black", 225, 600, true)
         for (let i = 0; i < enemyCount; i++){
             enemies[i] = new gameComponent(30,30, "red", 20*(i*5)+1, 100, true)
-            console.log(enemies[i])
         }
         for(let i = 0; i <= maxBullets; i++){
-            bullets[i] = new gameComponent(2, 5, "blue", -10, -10, false)
+            bullets[i] = new gameComponent(2, 5, "blue", i*10+380, 707, false)
+            console.log(bullets[i])
+
         }
         document.addEventListener("keydown", (event) =>{
             map[event.key] = event.type === "keydown";
@@ -52,13 +56,19 @@
         myGameArea.clear();
         playerGamePiece.newPos();
         playerGamePiece.update();
+        UIElementBot.update();
+
         for (let i = 0; i < enemyCount; i++){
             directionCheck();
-            bulletUpdate();
+            bulletUpdate(enemies[i]);                         //Movement looks cleaner here
             enemyMovement(enemies[i]);
             enemies[i].newPos();
             enemies[i].update();
         }
+        // bulletUpdate();                          //Intended way, moves slowly
+
+        UIElementTop.update();
+
         if(gameOverCheck()){
             //do smth here
         }
@@ -78,6 +88,34 @@
         }
     }
 
+    var UIElementTop = {
+        start: function(x, y){
+            this.width = 480;
+            this.height = 20;
+            this.x = x;
+            this.y = y;
+        },
+        update: function(){
+            let ctx = myGameArea.context;
+            ctx.fillStyle = "black";
+            ctx.fillRect(this.x, this.y, this.width, this.height)
+        }
+    }
+
+    var UIElementBot = {
+        start: function(x, y){
+            this.width = 480;
+            this.height = 20;
+            this.x = x;
+            this.y = y;
+        },
+        update: function(){
+            let ctx = myGameArea.context;
+            ctx.fillStyle = "black";
+            ctx.fillRect(this.x, this.y, this.width, this.height)
+        }
+    }
+
     function gameComponent(width, height, color, x, y, active){
         this.width = width;
         this.height = height;
@@ -86,11 +124,13 @@
         this.newX = x;
         this.newY = y;
         this.active = active;
+        this.draw = true;
         this.update = function(){
-            ctx = myGameArea.context;
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height)
-            //hier später so eine art motion blur einfügen
+            if(this.draw){
+                ctx = myGameArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height)
+            }
         }
         this.newPos = function(){
             if(this.newX < 0){
@@ -99,11 +139,11 @@
             else if(this.newX>450){
                 this.newX=450;
             }
-            else if(this.newY < 0){
-                this.newY = 0;
+            else if(this.newY < 20){
+                this.newY = 20;
             }
-            else if(this.newY>690){
-                this.newY=690
+            else if(this.newY>720){
+                this.newY=720
             }
             this.x = this.newX;
             this.y = this.newY;
@@ -197,8 +237,16 @@
         }
     }
 
-    function bulletUpdate(){
+    function bulletUpdate(enemy){
         for (let i = 0; i < bullets.length-1; i++){
+            if(bullets[i].y<enemy.y+31 && bullets[i].y>enemy.y-1){          //Account for floating point precision (the coords are float and normally larger than the corresponding whole number)
+                if(bullets[i].x<enemy.x+31 && bullets[i].x>enemy.x-1){
+                    console.log("Hit Detected")
+                    bullets[i].draw = false;
+                    enemy.draw = false;
+                    score += 50;
+                }
+            }
             if(bullets[i].active === true){
                 bullets[i].newY -= 5;           //IDEA: Create a menu toolbar at the top and bottom, top to hide the bullets left hanging there and bot to use the bullets as ammunition symbols
             }
@@ -207,6 +255,7 @@
         }
 
     }
+
 
     function gameOverCheck(){
         for (let i = 0; i < enemyCount; i++){
