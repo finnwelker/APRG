@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:700|Poppins:400');
+
+:root {
+    --text: #000000; //eigentlich ffffff aber für Platzhalter 000000
+    --background: #000000;
+    --primary: #47008a;
+    --secondary: #ffffff;
+    --accent: #47008a;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    background: url('static/background_(platzhalter).png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: var(--text);
+}
+
+h1 {
+    font-size: 4.210rem; /* 67.36px */
+    font-weight: 700;
+    text-align: center;
+}
+
+.content {
+    text-align: center;
+}
