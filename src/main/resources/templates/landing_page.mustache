@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../static/start.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
         <script src="http://localhost:35729/livereload.js" rel="preload" async></script>
         <title>Space Shooters</title>
     </head>
     <body>
+        <style>
+            body
+            {
+                background-image: url('../static/background_landing_page.png');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
+            }
+        </style>
         <script>
-            document.addEventListener('keydown', function() {
-                window.location.href = 'register_login.mustache'
-            });
+            document.addEventListener('keydown', function()
+                {
+                    window.location.href = 'register_login.mustache'
+                }
+            );
         </script>
     </body>
 </html>

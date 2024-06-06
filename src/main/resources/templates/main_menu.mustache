@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        (<link rel="stylesheet" href="../static/design.css">)
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <link rel="stylesheet" href="../static/main_menu.css">
         <script src="http://localhost:35729/livereload.js" rel="preload" async></script>
-        <title>Main Menu</title>
+        <title>Hauptmenü</title>
     </head>
     <body>
-        <h1>Welcome: {{username}}</h1>
+        <h1 style="color: White; font-size:50px">Willkommen {{username}}!</h1>
+        <div class="menu">
+            <button class="menu-button" onclick="location.href='game.mustache'">Spielen</button>
+            <button class="menu-button" onclick="location.href='landing_page.mustache'">Abmelden</button>
+            <button class="menu-button" onclick="location.href='settings.mustache'">Einstellungen</button>
+            <button class="menu-button" onclick="location.href='profile.mustache'">Profil</button>
+        </div>
     </body>
 </html>
