@@ -16,16 +16,16 @@
                 <input type="password" name="password" required>
                 <button type="submit" id="form-button">Anmelden</button>
             </form>
-                <button onclick="switchForm()" id="switch-button">Registrieren</button>
+                <button onclick="switchForm()" id="switch-button">Registrierung</button>
         </div>
         <script>
             let isRegister = false;
             function switchForm()
             {
                 isRegister = !isRegister;
-                document.getElementById('form-title').innerText = isRegister ? 'Registrieren' : 'Anmelden';
+                document.getElementById('form-title').innerText = isRegister ? 'Registrierung' : 'Anmeldung';
                 document.getElementById('form-button').innerText = isRegister ? 'Registrieren' : 'Anmelden';
-                document.getElementById('switch-button').innerText = isRegister ? 'Zurück zur Anmeldung' : 'Registrieren';
+                document.getElementById('switch-button').innerText = isRegister ? 'Zurück zur Anmeldung' : 'Registrierung';
             }
         </script>
     </body>
