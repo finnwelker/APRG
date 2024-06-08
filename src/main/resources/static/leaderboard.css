@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:700|Poppins:400');
+
+:root {
+    --text: #ffffff;
+    --background: #000000;
+    --primary: #47008a;
+    --secondary: #ffffff;
+    --accent: #47008a;
+}
+

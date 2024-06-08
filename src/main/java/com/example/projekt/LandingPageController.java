@@ -40,10 +40,10 @@ public class LandingPageController {
         return "profile";
     }
 
-    @PostMapping("/main_menu")
+    @PostMapping("/mainMenu")
     public String mainMenu(Model model, @RequestParam("username") String uName){
         model.addAttribute("username", uName);
-        return "main_menu";
+        return "mainMenu";
     }
 
 //    @PostMapping("/welcome")
