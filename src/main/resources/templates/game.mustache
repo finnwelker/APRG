@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Alien Invaders!</title>
@@ -10,15 +10,21 @@
             background-color: #f1f1f1;
         }
     </style>
+
 </head>
 <body onload="startGame()">
 <script>
 
-    var playerGamePiece;
-    var map = {};
-    var enemies = [];
-    var gameStage = 1;
-    var enemyCount = 5;
+    let img = new Image();
+    img.src = "../static/bg.png";
+    let playerGamePiece;
+    let scoreText;
+
+    let map = {};
+    let enemies = [];
+    let gameStage = 1;
+    let enemyCount = 5;
+    let id = 0;
     let movementToken = false;
     let movementDirection = 1;      //1 = rechts, -1 = links
     let yTarget = 120;
@@ -26,21 +32,25 @@
     let bullets = [];
     let bulletCounter = 0;
     let score = 0;
+    let activeFlagsE = [false, false, false, false, false];
+    let activeFlagsB = [false, false, false, false, false, false, false, false];
 
 
     function startGame(){
         myGameArea.start();
         UIElementTop.start(0, 0);
         UIElementBot.start(0, 700);
-        playerGamePiece = new gameComponent(30,30, "black", 225, 600, true)
-        for (let i = 0; i < enemyCount; i++){
-            enemies[i] = new gameComponent(30,30, "red", 20*(i*5)+1, 100, true)
+        scoreText = new UIElementText(70, 50, "Black", 450, 20);
+        playerGamePiece = new gameComponent(30,30, "black", 225, 600, true, 0);                                         //Add Player model
+        for(let i = 0; i < maxBullets; i++){                                                                           //Adds 8 bullets
+            bullets[i] = new gameComponent(2, 5, "blue", (i*10)+380, 707, false, 0);
+            activeFlagsB[i] = true;
+            bullets[i].draw = true;
         }
-        for(let i = 0; i <= maxBullets; i++){
-            bullets[i] = new gameComponent(2, 5, "blue", i*10+380, 707, false)
-            console.log(bullets[i])
+        console.log(bullets)
 
-        }
+        newWave();                                                                                                      //Add enemies
+
         document.addEventListener("keydown", (event) =>{
             map[event.key] = event.type === "keydown";
             inputDirection();
@@ -57,15 +67,16 @@
         playerGamePiece.newPos();
         playerGamePiece.update();
         UIElementBot.update();
-
+        scoreText.update();
         for (let i = 0; i < enemyCount; i++){
             directionCheck();
-            bulletUpdate(enemies[i]);                         //Movement looks cleaner here
+            bulletUpdate(enemies[i]);                                                                                   //Movement looks cleaner here
             enemyMovement(enemies[i]);
             enemies[i].newPos();
             enemies[i].update();
+            enemyActiveCheck(enemies, i)
         }
-        // bulletUpdate();                          //Intended way, moves slowly
+        // bulletUpdate();                                                                                              //Intended way, moves slowly
 
         UIElementTop.update();
 
@@ -80,6 +91,7 @@
             this.canvas.width = 480;
             this.canvas.height = 720;
             this.context = this.canvas.getContext("2d");
+            // this.context.drawImage(img, 0 ,0)
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.interval = setInterval(updateGame, 20)
         },
@@ -89,9 +101,9 @@
     }
 
     var UIElementTop = {
-        start: function(x, y){
-            this.width = 480;
-            this.height = 20;
+        start: function(width, height, x, y){
+            this.width = width;
+            this.height = height;
             this.x = x;
             this.y = y;
         },
@@ -116,13 +128,27 @@
         }
     }
 
-    function gameComponent(width, height, color, x, y, active){
+    function UIElementText(width, height, color, x, y,) {
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+        this.update = function(){
+            ctx = myGameArea.context;
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(score, this.x, this.y)
+        }
+    }
+
+    function gameComponent(width, height, color, x, y, active, id){
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
         this.newX = x;
         this.newY = y;
+        this.id = id;
         this.active = active;
         this.draw = true;
         this.update = function(){
@@ -186,7 +212,7 @@
             bulletCounter += 1;
         }
 
-    }
+    }                                                                                       //Combine this with inputAction and deal with movement key and spacebar being pressed at the same time
 
     function enemyMovement(enemy){
         if(!movementToken){
@@ -238,17 +264,10 @@
     }
 
     function bulletUpdate(enemy){
-        for (let i = 0; i < bullets.length-1; i++){
-            if(bullets[i].y<enemy.y+31 && bullets[i].y>enemy.y-1){          //Account for floating point precision (the coords are float and normally larger than the corresponding whole number)
-                if(bullets[i].x<enemy.x+31 && bullets[i].x>enemy.x-1){
-                    console.log("Hit Detected")
-                    bullets[i].draw = false;
-                    enemy.draw = false;
-                    score += 50;
-                }
-            }
+        for (let i = 0; i < bullets.length; i++){
+            bulletColl(i, enemy)
             if(bullets[i].active === true){
-                bullets[i].newY -= 5;           //IDEA: Create a menu toolbar at the top and bottom, top to hide the bullets left hanging there and bot to use the bullets as ammunition symbols
+                bullets[i].newY -= 5;                                                                                   //IDEA: Create a menu toolbar at the top and bottom, top to hide the bullets left hanging there and bot to use the bullets as ammunition symbols
             }
             bullets[i].newPos();
             bullets[i].update();
@@ -256,13 +275,79 @@
 
     }
 
+    function bulletColl(index, enemy){
+        if(bullets[index].y<enemy.y+31 && bullets[index].y>enemy.y-1 && enemy.active){                                  //Account for floating point precision (the coords are float and normally larger than the corresponding whole number)
+            if(bullets[index].x<enemy.x+31 && bullets[index].x>enemy.x-1){
+                bullets[index].draw = false;
+                enemy.draw = false;
+                score += 50;
+                enemy.active = false;
+                newWave();
+            }
+        }else if(bullets[index].y < 30){
+            bullets[index].draw = false;
+            bullets[index].active = false;
+            bullets[index].y = 707;
+            activeFlagsB[index] = false;
+            if (!reloadCheck()){
+                reloadBullets();
+            }
+
+        }
+    }
+
+    function reloadCheck(){
+        console.log(activeFlagsB)
+        return activeFlagsB.includes(true);
+    }
+
+    function reloadBullets(){
+        for(let i = 0; i < maxBullets; i++){                                                                           //Adds 8 bullets
+            // bullets[i].x = i*10+380;
+            // bullets[i].y = 707;
+            // bullets[i].active = false;
+            // bullets[i].draw = true
+            // activeFlagsB[i] = true;
+            bullets[i] = new gameComponent(2, 5, "blue", (i*10)+380, 707, false, 0);
+            activeFlagsB[i] = true;
+            bullets[i].draw = true;
+        }
+        bulletCounter = 0;
+    }
+
+    function newWave(){
+        if(!newWaveCheck()){
+            for (let i = 0; i < enemyCount; i++){
+                enemies[i] = new gameComponent(30,30, "red", 20*(i*5)+1, 100, true, i);
+                activeFlagsE[i]=true;
+            }
+        }
+    }
+
+    function newWaveCheck(){
+        return activeFlagsE.includes(true)
+    }
+
+    function enemyActiveCheck(enemies, index){
+        if(enemies[index].active === false){
+            activeFlagsE[index] = false;                                                                                 //This sets the activeFlag to false and then checks if a new wave needs to be spawned
+            newWave();
+        }
+    }
+
+    function findEnemy(element){
+        for (let i = 0; i<enemyCount;i++){
+            if(element === enemies[i]){
+                return true;
+            }
+        }
+    }
 
     function gameOverCheck(){
         for (let i = 0; i < enemyCount; i++){
-            if(enemies[i].y===690){             //Enemies reached bottom | TODO: Implement Game over screen - Pause game
+            if(enemies[i].y===690){                                                                                     //Enemies reached bottom | TODO: Implement Game over screen - Pause game
                 console.log("GAME OVER")
                 return true;
-
             }
         }
     }
