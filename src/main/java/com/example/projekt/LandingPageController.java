@@ -40,6 +40,11 @@ public class LandingPageController {
         return "profile";
     }
 
+    @GetMapping("/gameOver")
+    public String gameOver(){
+        return "gameOver";
+    }
+
     @PostMapping("/mainMenu")
     public String mainMenu(Model model, @RequestParam("username") String uName){
         model.addAttribute("username", uName);

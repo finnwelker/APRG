@@ -81,7 +81,7 @@
         UIElementTop.update();
 
         if(gameOverCheck()){
-            //do smth here
+            window.location.href = 'gameOver'
         }
     }
 
@@ -345,7 +345,7 @@
 
     function gameOverCheck(){
         for (let i = 0; i < enemyCount; i++){
-            if(enemies[i].y===690){                                                                                     //Enemies reached bottom | TODO: Implement Game over screen - Pause game
+            if(enemies[i].y>=690){                                                                                     //Enemies reached bottom | TODO: Implement Game over screen - Pause game
                 console.log("GAME OVER")
                 return true;
             }
