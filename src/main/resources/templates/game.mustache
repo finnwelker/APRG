@@ -210,6 +210,8 @@
             bullets[bulletCounter].newY = playerGamePiece.y;
             bullets[bulletCounter].active = true;
             bulletCounter += 1;
+        }else if(key === "Escape"){
+            window.location.href = 'mainMenu'
         }
 
     }                                                                                       //Combine this with inputAction and deal with movement key and spacebar being pressed at the same time
