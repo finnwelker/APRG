@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:700|Poppins:400');
 
-:root {
+:root
+{
     --text: #ffffff;
     --background: #000000;
     --primary: #47008a;
@@ -8,7 +9,8 @@
     --accent: #47008a;
 }
 
-body {
+body
+{
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
     display: flex;
@@ -20,7 +22,8 @@ body {
     background: url('background1.png') no-repeat fixed center center;
 }
 
-.container {
+.container
+{
     border: 4px solid #000000;
     padding: 50px;
     background: rgba(0,0,0,0.2);
@@ -31,24 +34,28 @@ body {
     align-items: center;
 }
 
-h1 {
+h1
+{
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     margin-bottom: 20px;
 }
 
-form {
+form
+{
     display: flex;
     flex-direction: column;
     align-items: stretch;
 }
 
-label {
+label
+{
     margin-top: 10px;
     font-weight: 700;
 }
 
-input {
+input
+{
     padding: 10px;
     margin-top: 5px;
     border: 2px solid #000000;
@@ -58,7 +65,8 @@ input {
     color: #ffffff;
 }
 
-button {
+button
+{
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     margin-top: 40px;
@@ -70,7 +78,8 @@ button {
     cursor: pointer;
 }
 
-#switch-button {
+#switch-button
+{
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     margin-top: 35px;
@@ -83,10 +92,12 @@ button {
     margin-bottom: 25px;
 }
 
-button:hover {
+button:hover
+{
     background: rgba(71, 0, 138, 0.6);
 }
 
-#switch-button:hover {
+#switch-button:hover
+{
     background: rgba(71, 0, 138, 0.6);
 }

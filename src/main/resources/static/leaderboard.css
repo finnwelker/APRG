@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:700|Poppins:400');
 
-:root {
+:root
+{
     --text: #ffffff;
     --background: #000000;
     --primary: #47008a;
@@ -8,3 +9,17 @@
     --accent: #47008a;
 }
 
+body
+{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: url('background1.png') no-repeat fixed center center;
+}
+
+/* Leaderboard erst machen wenn Datenbank da ist */
