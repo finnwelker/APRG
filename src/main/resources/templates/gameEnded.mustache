@@ -2,11 +2,26 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-        <link rel="stylesheet" href="../static/help">
+        <link rel="stylesheet" href="../static/gameEnded">
         <script src="http://localhost:35729/livereload.js" rel="preload" async></script>
         <title>Spiel vorbei</title>
     </head>
     <body>
-<!--    Work in Progress -->
-    </body>
+        <button class="button" onclick="location.href='game'">Neustarten</button>
+        <button class="button" onclick="location.href='mainMenu'">Hauptmenü</button>
+        <script>
+            document.addEventListener('keydown', function(e)
+                    {
+                        if (e.key === "Enter")
+                        {
+                            window.location.href = 'game';
+                        }
+                        else if (e.keyCode === 27)
+                        {
+                            window.location.href = 'mainMenu';
+                        }
+                    }
+            );
+        </script>
+        </body>
 </html>

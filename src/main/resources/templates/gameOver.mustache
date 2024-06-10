@@ -2,21 +2,13 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-<!--    <link rel="stylesheet" href="../static/gameOver">   -->
+        <link rel="stylesheet" href="../static/gameOver">
         <script src="http://localhost:35729/livereload.js" rel="preload" async></script>
         <title>Spiel verloren</title>
     </head>
     <body>
-        <style>
-            body
-            {
-                background-image: url('../static/backgroundGameOver.png');
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: 100% 100%;
-            }
-            /* Entweder hier oder bei der CSS noch die Handy version /*
-        </style>
+        <button class="button" onclick="location.href='game'">Neustarten</button>
+        <button class="button" onclick="location.href='mainMenu'">Hauptmenü</button>
         <script>
             document.addEventListener('keydown', function(e)
                     {
