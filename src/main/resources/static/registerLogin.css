@@ -95,7 +95,8 @@ button
 }
 
 button:hover,
-#switch-button:hover
+#switch-button:hover,
+input:hover
 {
     background: rgba(71, 0, 138, 0.6);
 }

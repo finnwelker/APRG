@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
         <link rel="stylesheet" href="../static/leaderboard">
         <script src="http://localhost:35729/livereload.js" rel="preload" async></script>
-        <title>Bestenliste</title>
+        <title>Leaderboard</title>
     </head>
     <body>
         <div class="leaderboard">
@@ -19,12 +19,13 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>X.</td>                 <!-- Kommt wenn die Datenbank steht -->
-                    <td>{{username}}</td>       <!-- Kommt wenn die Datenbank steht -->
-                    <td>XXX</td>                <!-- Kommt wenn die Datenbank steht -->
+                    <td>X.</td>                                                                                         <!-- Kommt wenn die Datenbank steht -->
+                    <td id="username">{{username}}</td>                                                                 <!-- Kommt wenn die Datenbank steht -->
+                    <td id="highscore">XXX</td>                                                                         <!-- Kommt wenn die Datenbank steht -->
                 </tr>
             </table>
             <button class="button" onclick="location.href='profile'">Zurück</button>
         </div>
+<!-- Rest kommt wenn die Datenbank steht -->
     </body>
 </html>

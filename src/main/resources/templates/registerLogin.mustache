@@ -10,16 +10,15 @@
     </head>
     <body>
         <div class="container">
-            <h1 style="color: White" id="form-title">Anmeldung</h1>
+            <h1 id="form-title">Anmeldung</h1>
             <form action="mainMenu" method="post" id="auth-form">
-
-                <label style="color: White" for="username">Benutzername:</label>
-                <input type="text" name="username" required>
-                <label style="color: White" for="password">Passwort:</label>
-                <input type="password" name="password" required>
-                <button type="submit" id="form-button">Anmelden</button>
+                <label for="username">Benutzername:</label>
+                <input type="text" id="username" name="username" placeholder="Benutzername" required>
+                <label for="password">Passwort:</label>
+                <input type="password" id="password" name="password" placeholder="Passwort" required>
+                <button type="submit" value="log-in" id="form-button">Anmelden</button>
             </form>
-                <button onclick="switchForm()" id="switch-button">Registrierung</button>
+            <button onclick="switchForm()" value="register" id="switch-button">Registrierung</button>
         </div>
         <script>
             let isRegister = false;
@@ -28,7 +27,7 @@
                 isRegister = !isRegister;
                 document.getElementById('form-title').innerText = isRegister ? 'Registrierung' : 'Anmeldung';
                 document.getElementById('form-button').innerText = isRegister ? 'Registrieren' : 'Anmelden';
-                document.getElementById('switch-button').innerText = isRegister ? 'Zurück zur Anmeldung' : 'Registrierung';
+                document.getElementById('switch-button').innerText = isRegister ? 'Zurück zur Anmeldung' : 'Zur Registrierung';
             }
         </script>
     </body>
